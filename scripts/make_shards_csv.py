@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build a per-shard residue table (shards.csv) from the poset_moment_filter shard outputs.
 
-Each production shard i was produced by
+Each shard i was produced by
     genposetg N t m i NPARTS | poset_moment_filter > shard_i.txt
 This reads every shard_*.txt in a results directory and writes one CSV row per shard:
     shard, parents, children, maxd, m0_p0, m0_p1, ..., m4_p3

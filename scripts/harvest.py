@@ -73,7 +73,7 @@ def main():
 
     print(f"\n=== shard validation ===")
     if bad:
-        print(f"  {len(bad)} BAD SHARDS (excluded from sums — MUST be re-run):")
+        print(f"  {len(bad)} BAD SHARDS (excluded from sums, MUST be re-run):")
         for sid, why in bad[:20]: print(f"    shard {sid}: {why}")
         if len(bad) > 20: print(f"    ... and {len(bad)-20} more")
     if nparts:

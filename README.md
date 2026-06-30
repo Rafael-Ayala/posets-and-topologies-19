@@ -36,8 +36,8 @@ P(19) = A - 11628*G(15,4) + 969*G(16,3)
 
 where `A` is a fixed constant absorbing `P(18)` and the lower-diagonal moments `G(m,19-m)` for
 `m <= 14`, and `G(15,4) = 846002793378179474085677125510787278` is a moment over the 15-point posets.
-Both are summed directly from the antichain-count histograms in `data/d_histograms.txt` — a complete
-enumeration of the posets on at most 15 points — and reconstructed and checked against these published
+Both are summed directly from the antichain-count histograms in `data/d_histograms.txt` (a complete
+enumeration of the posets on at most 15 points), and reconstructed and checked against these published
 values by `scripts/assemble_constant.py`. Only `G(16,3)` requires the 16-point harvest above.
 
 This route combines the classical Erné–Stege moment reduction (1991) with the isomorphism-free harvest
@@ -48,7 +48,7 @@ computed values, not a new method.
 
 ```
 src/ 
-  poset_moment_filter.c   production kernel (fast-zeta, C): reads digraph6 m-point posets from
+  poset_moment_filter.c   kernel (fast-zeta, C): reads digraph6 m-point posets from
                           stdin, emits the moment residues sum_z d(Q+z)^k mod four 61-bit primes
   reference_moments.py    O(d^2) ideal-lattice moment reference (the recurrence the C kernel
                           uses), cross-checked against brute-force enumeration of labeled posets
@@ -76,7 +76,7 @@ data/
 
 ## Dependencies
 
-- [`nauty`/`gtools`](https://pallini.di.uniroma1.it/) — provides `genposetg` (poset generation)
+- [`nauty`/`gtools`](https://pallini.di.uniroma1.it/), which provides `genposetg` (poset generation)
   and the headers (`nauty.h`, `gtools.h`) the kernel links against.
 - A C compiler with `__int128`, and Python 3 for the harvest/assembly scripts (standard
   library only).
@@ -118,10 +118,10 @@ Steps 1-3 below reproduce the residue table itself from scratch, a large computa
    genposetg 15 t m i NPARTS | ./poset_moment_filter > shard_i.txt
    ```
 
-   The production run used `NPARTS = 307200`. The shards are independent and may be run in any
+   The full run used `NPARTS = 307200`. The shards are independent and may be run in any
    order and at any concurrency. `run_shards.sh` wraps the loop (`JOBS` sets the number run
    concurrently); alternatively, the per-shard command can be driven directly under any
-   scheduler. It is idempotent — complete shards are skipped, so it resumes after interruption.
+   scheduler. It is idempotent: complete shards are skipped, so it resumes after interruption.
 
 2. **Harvest**: validate all shards and reconstruct the moments.
 
@@ -129,7 +129,7 @@ Steps 1-3 below reproduce the residue table itself from scratch, a large computa
    python3 scripts/harvest.py <results_dir> --nparts 307200 --n15
    ```
 
-   `<results_dir>` is wherever the shard files were written — `run_shards.sh`'s `OUTDIR`
+   `<results_dir>` is wherever the shard files were written: `run_shards.sh`'s `OUTDIR`
    (default `./shards`), or, if the per-shard command was run directly, the directory holding
    the `shard_i.txt` files.
 
@@ -138,14 +138,14 @@ Steps 1-3 below reproduce the residue table itself from scratch, a large computa
    mismatch, so a corrupted shard or CRT slip is caught before it can reach `P(19)`. With
    `--n15` the anchors are:
 
-   - `parents == A000112(15)` — every one of the 68,275,077,901,156 unlabeled 15-point parents
+   - `parents == A000112(15)`, every one of the 68,275,077,901,156 unlabeled 15-point parents
      was summed exactly once (no missing or duplicated shards);
-   - `sum w == P(15)` modulo each prime — the parent weights `15!/|Aut Q|` sum to the labeled
+   - `sum w == P(15)` modulo each prime, the parent weights `15!/|Aut Q|` sum to the labeled
      15-point total `P(15)`;
-   - `G(16,0) == P(16)` — the 0th moment is a count, so it must equal the labeled 16-point
+   - `G(16,0) == P(16)`, the 0th moment is a count, so it must equal the labeled 16-point
      total `P(16)`;
-   - `G(16,1)` and `G(16,2)` — match the closed-form values the Erné–Stege relations predict;
-   - `G(16,3)` — the new moment, which has no independent reference value; it is checked
+   - `G(16,1)` and `G(16,2)`, which match the closed-form values the Erné–Stege relations predict;
+   - `G(16,3)`, the new moment, which has no independent reference value; it is checked
      against the predicted magnitude window `[5.317e36, 5.369e36]`.
 
 3. **Assemble**: turn the reconstructed `G(16,k)` into `P(19)` and run the external checks.
@@ -160,19 +160,19 @@ Steps 1-3 below reproduce the residue table itself from scratch, a large computa
 
 The same kernel run one diagonal lower (over the posets on at most 14 points) produces
 `G(13,k)`, `G(14,k)`, `G(15,k)`, recorded in `data/expected_values.json`, which independently
-reproduce the known `P(17)` and `P(18)` — the validation ladder for the 16-point run.
+reproduce the known `P(17)` and `P(18)`, the validation ladder for the 16-point run.
 
 ## Residue table
 
 `data/shards.csv.gz` (gzip-compressed) has one row per shard (24 columns):
 
-- `shard` — the shard index `i`, the **only** input: shard `i` was produced by
+- `shard`: the shard index `i`, the **only** input: shard `i` was produced by
   `genposetg 15 t m i 307200 | poset_moment_filter`, so `i` alone fixes which block of the
   15-point posets that row covers.
-- `m{k}_p{j}` (the last 20 columns, `k = 0..4`, `j = 0..3`) — the **output**: moment `k`
+- `m{k}_p{j}` (the last 20 columns, `k = 0..4`, `j = 0..3`), the **output**: moment `k`
   reduced modulo the `j`-th of the four 61-bit primes. Summing these prime by prime over all
   307,200 shards and applying CRT reproduces `G(16,k)`.
-- `parents`, `children`, `maxd` — diagnostic counts (the number of 15-point parents and
+- `parents`, `children`, `maxd`: diagnostic counts (the number of 15-point parents and
   16-point children the shard processed, and the largest ideal-lattice size `d`, i.e. the
   number of order ideals or downsets, seen among the shard's parents); not part of the
   residue sums, kept only for sanity checks.

@@ -1,5 +1,5 @@
 /*
- * poset_moment_filter.c — fast-zeta filter for G(n+1,k), k=0..4.
+ * poset_moment_filter.c: fast-zeta filter for G(n+1,k), k=0..4.
  *
  * Reads unlabeled m-point posets (m = n <= 15) from stdin in digraph6 form (transitively-closed
  * digraphs, the output of genposetg ... t) and emits the residues of the moments sum_z d(Q+z)^k
@@ -16,7 +16,7 @@
  *  - Per-parent self-asserts: M0[full] == d and c_sup[empty] == d (transform integrity),
  *    n! % |Aut| == 0, d <= 32768.
  *  - Parent-level anchors: panchor k = sum w * d(Q)^k mod each prime (k=0..4). Summed over a
- *    complete run these equal G(15,k) — five 244-bit pipeline checks.
+ *    complete run these equal G(15,k), five 244-bit pipeline checks.
  *  - Deterministic sample emission (1 per 2^20 parents) for offline independent recompute.
  */
 

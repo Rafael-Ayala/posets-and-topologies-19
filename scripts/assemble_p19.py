@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Final assembly: G(16,k) from the production harvest -> p(19) -> all checks -> A000798(19).
+Final assembly: G(16,k) from the insertion harvest -> p(19) -> all checks -> A000798(19).
 Usage: assemble_p19.py <G16_0> <G16_1> <G16_2> <G16_3> [G16_4]
 (the CRT-reconstructed integers printed by harvest.py)
 """
@@ -26,13 +26,13 @@ def main():
         nonlocal ok
         good = (got == exp); ok &= good
         print(f"  {name}: {'OK' if good else f'FAIL got {got} expect {exp}'}")
-    print("=== production self-checks ===")
+    print("=== self-checks ===")
     chk("G(16,0) == p(16)", G16_0, P[16])
     chk("G(16,1) == ES-derived", G16_1, ES_G16_1)
     chk("G(16,2) == ES-derived", G16_2, ES_G16_2)
     print(f"\nG(16,3) = {G16_3}")
     tlo, thi = 5316669 * 10**30, 5368268 * 10**30
-    print(f"  magnitude window [5.317e36, 5.369e36]: {'OK' if tlo <= G16_3 <= thi else 'OUTSIDE — INVESTIGATE'}")
+    print(f"  magnitude window [5.317e36, 5.369e36]: {'OK' if tlo <= G16_3 <= thi else 'OUTSIDE, INVESTIGATE'}")
 
     p19 = B_CONST + 969 * G16_3
     print(f"\np(19) = A001035(19) = {p19}")

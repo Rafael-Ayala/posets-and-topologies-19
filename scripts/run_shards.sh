@@ -5,7 +5,7 @@
 #     genposetg N t m i NPARTS | poset_moment_filter > OUTDIR/shard_i.txt
 #
 # Re-running is idempotent (complete shards are skipped), so it resumes after interruption.
-# The full N=15 production used NPARTS=307200. The shards are independent, so run them in
+# The full N=15 run used NPARTS=307200. The shards are independent, so run them in
 # whatever order and concurrency you like: set JOBS to how many to run at once here, or drive
 # the per-shard command with whatever scheduler you have.
 #
